@@ -1,5 +1,5 @@
 web:
-  image: elzekool/magdev
+  build: .
   ports:
     - "80:80"
   links:
