@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+cd /tmp
+curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/1.9.2.2 -o 1.9.2.2.tar.gz
+tar xf 1.9.2.2.tar.gz
+rm -f -R /var/www/htdocs/*
+mv magento-mirror-1.9.2.2/* magento-mirror-1.9.2.2/.htaccess /var/www/htdocs
+chown -R www-data:www-data /var/www/htdocs
