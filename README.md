@@ -16,11 +16,11 @@ Steps:
 
 2. Execute `docker-compose up -d` this starts the MySQL, Redis en PHP/Apache box
 
-3. Execute `docker exec -it $(docker-compose ps | grep web | awk '{print $1;}') download-magento` to download Magento
+3. Execute `docker exec -it -u www-data $(docker-compose ps | grep web | awk '{print $1;}') download-magento` to download Magento
 
-4. *(Optional)* Execute `docker exec -it $(docker-compose ps | grep web | awk '{print $1;}') install-sampledata` to install the sample data. This has to be done before the Magento installation
+4. *(Optional)* Execute `docker exec -it -u www-data $(docker-compose ps | grep web | awk '{print $1;}') install-sampledata` to install the sample data. This has to be done before the Magento installation
 
-5. Execute `docker exec -it $(docker-compose ps | grep web | awk '{print $1;}') install-magento` to run the magento installer.
+5. Execute `docker exec -it -u www-data $(docker-compose ps | grep web | awk '{print $1;}') install-magento` to run the magento installer.
 
 ## Usefull information
 
@@ -28,6 +28,14 @@ Steps:
 * Make sure the configured host (as configured in env) is in your hostfile
 * Xdebug is configured to connect back
 * This box is not meant for production as it exposes the root password for MySQL as an environment variabele
+* The two scripts `exec-magerun.sh` and `exec-php-cli.sh` allow running n98-magerun and PHP inside the docker container,
+  the local directory inside the container is `/var/www/htdocs`
+* The user www-data is given an user id of 1000. On most linux systems this is the id of the first non-root user. 
+  This makes the files under ./src writable by this user. If the user you want to use has an other id you need to change this,
+  this can be done with `docker exec -it $(docker-compose ps | grep web | awk '{print $1;}') usermod -u $(id -u USERNAME)  www-data` where
+  `USERNAME` is replaced by the user you want www-data to correspond with.
+
+
 
 
 
