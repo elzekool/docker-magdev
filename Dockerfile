@@ -56,7 +56,8 @@ RUN cd /tmp \
     && cp modules/xdebug.so /usr/local/lib/php/extensions/no-debug-non-zts-20121212 \
     && echo "zend_extension = /usr/local/lib/php/extensions/no-debug-non-zts-20121212/xdebug.so" >> /usr/local/etc/php/php.ini \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini \
-    && echo "xdebug.remote_connect_back" >> /usr/local/etc/php/php.ini
+    && echo "xdebug.remote_connect_back=On" >> /usr/local/etc/php/php.ini \
+    && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/php.ini
 
 
 
