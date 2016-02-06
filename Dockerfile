@@ -7,7 +7,7 @@ WORKDIR /var/www/htdocs
 # Setup magerun
 ENV N98_MAGERUN_VERSION 1.96.1
 ENV N98_MAGERUN_URL https://raw.githubusercontent.com/netz98/n98-magerun/$N98_MAGERUN_VERSION/n98-magerun.phar
-RUN curl -o /usr/local/bin/n98-magerun $N98_MAGERUN_URL \
+RUN curl -o /usr/local/bin/n98-magerun -L $N98_MAGERUN_URL \
     && chmod +x /usr/local/bin/n98-magerun
 
 # Setup Magento PHP requirements
@@ -47,7 +47,7 @@ RUN chmod +x /usr/local/bin/install-magento
 
 # Install Xdebug
 RUN cd /tmp \
-    && curl -o xdebug-2.4.0rc3.tgz http://xdebug.org/files/xdebug-2.4.0rc3.tgz \
+    && curl -o xdebug-2.4.0rc3.tgz -L http://xdebug.org/files/xdebug-2.4.0rc3.tgz \
     && tar -xvzf xdebug-2.4.0rc3.tgz \
     && cd xdebug-2.4.0RC3 \
     && phpize \
@@ -59,6 +59,14 @@ RUN cd /tmp \
     && echo "xdebug.remote_connect_back=On" >> /usr/local/etc/php/php.ini \
     && echo "xdebug.remote_port=9000" >> /usr/local/etc/php/php.ini
 
+# Install Git and make /var/www/.composer writable
+RUN apt-get update && apt-get install -y git && \
+    mkdir -p /var/www/.composer && \
+    chmod a+rwX /var/www/.composer
+
+# Install ZIP extension for Composer
+RUN apt-get update && apt-get install -y zlibc zlib1g zlib1g-dev && \
+    docker-php-ext-install zip
 
 
 
